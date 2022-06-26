@@ -1,25 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import theme from './theme/theme';
+import { ThemeProvider, StylesProvider } from '@material-ui/core/styles';
+import { CssBaseline } from '@material-ui/core';
+import IndexScreens from './screens/index';
+import { create } from 'jss';
+import rtl from 'jss-rtl';
+import { jssPreset } from '@material-ui/core/styles';
+import { getDirection } from './localization/index';
+
+const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  return getDirection() === "ltr" ? (
+    <ThemeProvider theme={theme}>
+      <StylesProvider>
+        <CssBaseline />
+        <IndexScreens />
+      </StylesProvider>
+    </ThemeProvider>
+  ) : (
+    <ThemeProvider theme={theme}>
+      <StylesProvider jss={jss}>
+        <CssBaseline />
+        <IndexScreens />
+      </StylesProvider>
+    </ThemeProvider>
   );
 }
 
